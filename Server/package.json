@@ -1,0 +1,29 @@
+{
+  "name": "uploading",
+  "version": "1.0.0",
+  "description": "Uploading transaction data to a web app",
+  "main": "index.js",
+  "author": "Shallon Kobusinge",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "joi": "^17.4.0",
+    "joi-objectid": "^3.0.1",
+    "mongoose": "^5.12.7",
+    "node-sass": "^5.0.0",
+    "node-sass-middleware": "^0.11.0",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7",
+    "socket.io": "^4.0.1"
+  },
+  "scripts": {
+    "serve": "nodemon Server/index.js",
+    "start": "node Server/index.js",
+    "dev": "SET debug=* && npm serve",
+    "scss": "node-sass --watch scss -o css"
+  }
+}
