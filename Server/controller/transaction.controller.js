@@ -14,8 +14,6 @@ exports.createTransation = async (req, res) => {
         if (created) {
             return res.send({ transaction: created, message: "Card already exists" })
         }
-
-
     }
 
     const saved = {
