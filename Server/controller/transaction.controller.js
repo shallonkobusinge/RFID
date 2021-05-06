@@ -1,5 +1,4 @@
 const { TransactionModel, validate_transaction } = require("../models/transaction.model.js")
-const { Card } = require("../models/card.model.js")
 exports.createTransation = async (req, res) => {
     const { error } = validate_transaction(req.body)
     if (error) {
