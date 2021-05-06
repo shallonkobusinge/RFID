@@ -7,15 +7,6 @@ exports.createTransation = async (req, res) => {
     }
     let cardFound = await TransactionModel.findOne({ cardUUID: req.body.cardUUID })
     if (cardFound) {
-        let saved = {
-            cardUUID: cardFound.cardUUID,
-            initialBalance: cardFound.newBalance,
-            transportFare: req.body.transportFare,
-            newBalance: cardFound.initialBalance - req.body.transportFare,
-        }
-        console.log(saved)
-        // const transaction = new TransactionModel(saved)
-        // cardFound = {...cardFound,...saved}
         cardFound.initialBalance = cardFound.newBalance;
         cardFound.transportFare = req.body.transportFare
         cardFound.newBalance = cardFound.initialBalance - req.body.transportFare
