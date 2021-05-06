@@ -38,17 +38,18 @@ mongoose
     process.exit();
   });
 
-  require("./routers/transaction.router.js")(app);
+require("./routers/transaction.router.js")(app);
 app.use(express.static('Client/public'))
-  // define a simple route
+// define a simple route
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname,'../Client/index.html'))
+  res.json({ message: "Welcome to RFID Panel Control" });
 });
+
 
 var io = socketio(server)
 
 /*socket connection*/
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   socket.emit('NEW_SOCKET', { message: 'A new user has joined!' });
   console.log("new socket connected")
 });
@@ -56,7 +57,7 @@ io.on('connection', function(socket) {
 app.get("/new-transaction", (req, res) => {
   const body = req.body;
   //save the transaction data
-  io.emit("NEW_TRANSACTION", { transaction: body, message: "new transaction", success: true})
+  io.emit("NEW_TRANSACTION", { transaction: body, message: "new transaction", success: true })
   return res.send()
 })
 

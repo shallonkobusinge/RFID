@@ -1,53 +1,70 @@
 <template>
-    <div class="container">
-        <h2>Document </h2>
-        <ul class="responsive-table">
-          <li class="table-header">
-            <div class="col col-1">Job Id</div>
-            <div class="col col-2">Customer Name</div>
-            <div class="col col-3">Amount Due</div>
-            <div class="col col-4">Payment Status</div>
-          </li>
-          <li class="table-row">
-            <div class="col col-1" data-label="Job Id">42235</div>
-            <div class="col col-2" data-label="Customer Name">John Doe</div>
-            <div class="col col-3" data-label="Amount">$350</div>
-            <div class="col col-4" data-label="Payment Status">Pending</div>
-          </li>
-          <li class="table-row">
-            <div class="col col-1" data-label="Job Id">42442</div>
-            <div class="col col-2" data-label="Customer Name">Jennifer Smith</div>
-            <div class="col col-3" data-label="Amount">$220</div>
-            <div class="col col-4" data-label="Payment Status">Pending</div>
-          </li>
-          <li class="table-row">
-            <div class="col col-1" data-label="Job Id">42257</div>
-            <div class="col col-2" data-label="Customer Name">John Smith</div>
-            <div class="col col-3" data-label="Amount">$341</div>
-            <div class="col col-4" data-label="Payment Status">Pending</div>
-          </li>
-          <li class="table-row">
-            <div class="col col-1" data-label="Job Id">42311</div>
-            <div class="col col-2" data-label="Customer Name">John Carpenter</div>
-            <div class="col col-3" data-label="Amount">$115</div>
-            <div class="col col-4" data-label="Payment Status">Pending</div>
-          </li>
-        </ul>
-      </div>
+  <div class="container">
+    <h2>Document</h2>
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col col-1">UUID</div>
+        <div class="col col-2">Initial Balance</div>
+        <div class="col col-3">Transport Fare</div>
+        <div class="col col-4">New Balance</div>
+      </li>
+      <li class="table-row">
+        <div class="col col-1" data-label="Job Id">42235</div>
+        <div class="col col-2" data-label="Customer Name">John Doe</div>
+        <div class="col col-3" data-label="Amount">$350</div>
+        <div class="col col-4" data-label="Payment Status">Pending</div>
+      </li>
+      <li class="table-row">
+        <div class="col col-1" data-label="Job Id">42442</div>
+        <div class="col col-2" data-label="Customer Name">Jennifer Smith</div>
+        <div class="col col-3" data-label="Amount">$220</div>
+        <div class="col col-4" data-label="Payment Status">Pending</div>
+      </li>
+      <li class="table-row">
+        <div class="col col-1" data-label="Job Id">42257</div>
+        <div class="col col-2" data-label="Customer Name">John Smith</div>
+        <div class="col col-3" data-label="Amount">$341</div>
+        <div class="col col-4" data-label="Payment Status">Pending</div>
+      </li>
+      <li class="table-row">
+        <div class="col col-1" data-label="Job Id">42311</div>
+        <div class="col col-2" data-label="Customer Name">John Carpenter</div>
+        <div class="col col-3" data-label="Amount">$115</div>
+        <div class="col col-4" data-label="Payment Status">Pending</div>
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
+
+import Api from "../services/Apis";
 export default {
-  name: 'Table',
-  data () {
+  name: "Table",
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: "Welcome to Your Vue.js App"
+    };
+  },
+  methods: {
+    async getTransaction() {
+      await Api.get("read/transactions")
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
+  },
+  created() {
+  //  this.getTransaction()
+  console.log("From created")
   }
-}
+};
 </script>
-<style scoped >
+<style scoped>
 body {
-  font-family: 'lato', sans-serif;
+  font-family: "lato", sans-serif;
 }
 .container {
   max-width: 1000px;
@@ -72,14 +89,14 @@ small {
   margin-bottom: 25px;
 }
 .responsive-table .table-header {
-  background-color: #95A5A6;
+  background-color: #95a5a6;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .responsive-table .table-row {
   background-color: #ffffff;
-  box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
 }
 .responsive-table .col-1 {
   flex-basis: 10%;
@@ -108,7 +125,7 @@ small {
     padding: 10px 0;
   }
   .responsive-table .col::before {
-    color: #6C7A89;
+    color: #6c7a89;
     padding-right: 10px;
     content: attr(data-label);
     flex-basis: 50%;

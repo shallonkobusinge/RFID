@@ -4,12 +4,16 @@ exports.createTransation = async (req, res) => {
     if (error) {
         return res.send({ message: error.details[0].message })
     }
-    let cardFound = await TransactionModel.findOne({ cardUUID: req.body.cardUUID })
-    if (cardFound) {
-        cardFound.initialBalance = cardFound.newBalance;
-        cardFound.transportFare = req.body.transportFare
-        cardFound.newBalance = cardFound.initialBalance - req.body.transportFare
-        const created = await cardFound.save()
+    let cardFound = await TransactionModel.find({ cardUUID: req.body.cardUUID })
+    if (cardFound.length > 0) {
+        cardFound = cardFound[cardFound.length - 1]
+        let newCardData = {
+            cardUUID: cardFound.cardUUID,
+            initialBalance: cardFound.newBalance,
+            transportFare: req.body.transportFare,
+            newBalance: parseInt(cardFound.newBalance) - parseInt(req.body.transportFare),
+        }
+        const created = await TransactionModel.create(newCardData)
         if (created) {
             return res.send({ transaction: created, message: "Card already exists" })
         }
