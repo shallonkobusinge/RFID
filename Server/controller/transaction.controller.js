@@ -7,11 +7,7 @@ exports.createTransation = async (req, res) => {
     let cardFound = await TransactionModel.find({ cardUUID: req.body.cardUUID })
     if (cardFound.length > 0) {
         cardFound = cardFound[cardFound.length - 1]
-        if (req.body.transportFare > cardFound.initialBalance) {
-            return res.send({ message: "Insufficient amount please recharge !!", success: false })
-
-
-        }
+        
         let newCardData = {
             cardUUID: cardFound.cardUUID,
             initialBalance: cardFound.newBalance,
@@ -25,11 +21,7 @@ exports.createTransation = async (req, res) => {
             return res.send({ transaction: created, message: "Card already exists" })
         }
     }
-    if (req.body.transportFare > req.body.initialBalance) {
-        return res.send({ message: "Insufficient amount please recharge !!", success: false })
 
-
-    } else {
         const saved = {
             cardUUID: req.body.cardUUID,
             initialBalance: req.body.initialBalance,
@@ -45,7 +37,7 @@ exports.createTransation = async (req, res) => {
 
     }
 
-}
+
 exports.getTransactions = async (req, res) => {
     let transactions = await TransactionModel.find()
     if (transactions) {
