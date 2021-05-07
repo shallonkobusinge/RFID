@@ -1,7 +1,12 @@
 <template>
-  <div class="container">
-    <v-client-table :data="tableData" :columns="columns" :options="options">
-    </v-client-table>
+  <div>
+    <div class="navigation">
+      <h2>RFID Transaction Panel</h2>
+    </div>
+    <div class="container">
+      <v-client-table :data="tableData" :columns="columns" :options="options">
+      </v-client-table>
+    </div>
   </div>
 </template>
 <script>
@@ -47,58 +52,33 @@ export default {
       msg: "Welcome to Your Vue.js App",
       transactions: []
     };
-        
   },
 
-
-    // async getTransaction() {
-    //   await Api.get("/read/transactions")
-    //     .then(response => {
-    //       this.tableData = response.data.transactions;
-    //       for (let i = 0; i < this.tableData.length; i++) {
-    //         if (this.tableData[i].createdAt === undefined) {
-    //           this.tableData[i].createdAt = new Date();
-    //         }
-    //         this.tableData[i].createdAt = new Date(
-    //           this.tableData[i].createdAt
-    //         ).toUTCString();
-    //         console.log(this.tableData[i].createdAt);
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // },
-
-   
   created() {
-    let self = this
-    // console.log(this.tableData)
-    // this.getTransactions();
-     socket.on("NEW_TRANSACTION", function(data) {
-        self.tableData = data.transactions;
-                for (let i = 0; i < self.tableData.length; i++) {
-     
-          self.tableData[i].createdAt = new Date(
-            self.tableData[i].createdAt
-          ).toUTCString();
-        }
-    
-        // console.log(this.tableData)
-     })
-    //  console.log(this.tableData)
+    let self = this;
+    socket.on("NEW_TRANSACTION", function(data) {
+      self.tableData = data.transactions;
+      for (let i = 0; i < self.tableData.length; i++) {
+        self.tableData[i].createdAt = new Date(
+          self.tableData[i].createdAt
+        ).toUTCString();
+      }
+    });
   }
 };
 </script>
 <style>
 #app {
-  width: 95%;
+  width: 100%;
   margin-top: 50px;
   font-family: Inter;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 #app thead {
   vertical-align: bottom;
-  background: black !important;
+  background: #2090e9 !important;
   color: white;
   font-size: 15px;
 }
@@ -113,6 +93,23 @@ export default {
   border-collapse: collapse;
   width: 100% !important;
   font-size: 13px;
+}
+#app .navigation {
+  width: 100%;
+  background: #2090e9;
+  display: flex;
+  height: 40px;
+  padding: 1rem 0 0 15rem;
+  color: white;
+  margin: 0 0 2rem 0;
+}
+#app input {
+  margin: 0 0 0 1rem;
+  width: 26rem !important;
+}
+#app select {
+  width: 16rem !important;
+  margin: 0 0 0 1rem;
 }
 /* .container {
   max-width: 1000px;
