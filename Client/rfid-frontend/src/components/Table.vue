@@ -2,11 +2,14 @@
   <div class="container">
     <v-client-table :data="tableData" :columns="columns" :options="options">
     </v-client-table>
-    <button v-on:click="sendMessage('Hello World')">Send</button>
+    <!-- <button v-on:click="sendMessage('Hello World')">Send</button> -->
   </div>
 </template>
 <script>
 import Api from "../services/Apis";
+import io from "socket.io-client";
+var socket = io("http://localhost:4000", { transports: ["websocket"] });
+
 export default {
   name: "Table",
   data() {
@@ -16,7 +19,7 @@ export default {
         "initialBalance",
         "transportFare",
         "newBalance",
-        "createdAt",
+        "createdAt"
       ],
       tableData: [],
       options: {
@@ -25,7 +28,7 @@ export default {
           initialBalance: "Initial Balance",
           transportFare: "Transport Fare",
           newBalance: "New Balance",
-          createdAt: "Transaction Date",
+          createdAt: "Transaction Date"
         },
         sortable: [
           "cardUUID",
@@ -39,47 +42,67 @@ export default {
           "initialBalance",
           "transportFare",
           "newBalance",
-          "createdAt",
+          "createdAt"
         ],
-        connection:null,
+        connection: null
       },
       msg: "Welcome to Your Vue.js App",
       transactions: []
     };
+        
   },
   methods: {
-    async getTransaction() {
-      await Api.get("/read/transactions")
-        .then(response => {
-          this.tableData = response.data.transactions;
-          for(let i = 0; i < this.tableData.length; i++) {
-            if(this.tableData[i].createdAt === undefined) {
-              this.tableData[i].createdAt = new Date()
-            }
-            this.tableData[i].createdAt = new Date(this.tableData[i].createdAt).toUTCString();
-            console.log(this.tableData[i].createdAt)
+
+    // async getTransaction() {
+    //   await Api.get("/read/transactions")
+    //     .then(response => {
+    //       this.tableData = response.data.transactions;
+    //       for (let i = 0; i < this.tableData.length; i++) {
+    //         if (this.tableData[i].createdAt === undefined) {
+    //           this.tableData[i].createdAt = new Date();
+    //         }
+    //         this.tableData[i].createdAt = new Date(
+    //           this.tableData[i].createdAt
+    //         ).toUTCString();
+    //         console.log(this.tableData[i].createdAt);
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
+
+    getTransactions() {
+      socket.on("NEW_TRANSACTION", function(data) {
+        this.tableData = data.transactions;
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].createdAt === undefined) {
+            this.tableData[i].createdAt = new Date();
           }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    sendMessage: function(message){
-      console.log(this.connection)
-      this.connection.send(message)
+          this.tableData[i].createdAt = new Date(
+            this.tableData[i].createdAt
+          ).toUTCString();
+        }
+      });
     }
   },
   created() {
-    this.getTransaction();
-    console.log("Starting connection to the web socket ")
-    this.connection = new WebSocket("wss://echo.websocket.org")
-    this.connection.onopen = function(event){
-      console.log(event);
-      console.log("Successfully connected to the web socket")
-    }
-    this.connection.onmessage = function(event){
-      console.log(event);
-    }
+    let self = this
+    // console.log(this.tableData)
+    // this.getTransactions();
+     socket.on("NEW_TRANSACTION", function(data) {
+        self.tableData = data.transactions;
+                for (let i = 0; i < self.tableData.length; i++) {
+          if (self.tableData[i].createdAt === undefined) {
+            self.tableData[i].createdAt = new Date();
+          }
+          self.tableData[i].createdAt = new Date(
+            self.tableData[i].createdAt
+          ).toUTCString();
+        }
+        // console.log(this.tableData)
+     })
+    //  console.log(this.tableData)
   }
 };
 </script>
@@ -98,7 +121,7 @@ export default {
 #app label {
   font-size: 20px;
 }
-#app tr{
+#app tr {
   font-size: 16px;
 }
 #app table {

@@ -22,6 +22,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    proxy: 'http://localhost:4000',
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [

@@ -4,6 +4,8 @@ const dotenv = require('dotenv')
 const cors = require("cors");
 const dbConfig = require("./config/db.config.js");
 const mongoose = require('mongoose')
+// const getTransactions = require('./routers/transaction.router.js')
+const {TransactionModel} = require('./models/transaction.model.js')
 // const path = require('path')
 
 
@@ -44,15 +46,26 @@ app.use(express.static('Client/public'))
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to RFID Panel Control" });
 });
+getTransactions = async () => {
+  let transactions = await TransactionModel.find()
+  if (transactions) {
+      return { transactions: transactions }
+  } else {
+      return { message: 'No transactions found' }
+  }
+}
 
 
 var io = socketio(server)
 
 /*socket connection*/
-// io.on('connection', function (socket) {
-//   socket.emit('NEW_SOCKET', { message: 'A new user has joined!' });
-//   console.log("new socket connected")
-// });
+io.on('connection', function (socket) {
+  socket.emit('NEW_SOCKET', { message: 'A new user has joined!' });
+  console.log("new socket connected")
+  setInterval(async()=>{
+    socket.emit("NEW_TRANSACTION", await getTransactions())
+  },5000)
+});
 
 // app.post("/new-transaction", (req, res) => {
 //   const body = req.body;
@@ -60,11 +73,10 @@ var io = socketio(server)
 //   io.emit("NEW_TRANSACTION", { transaction: body, message: "new transaction", success: true })
 //   return res.send()
 // })
-io.on("connection", socket =>{
-  setInterval(()=>{
-    socket.emit("NEW_SOCKET", { message:"A new user has joined"})
-  },5000)
-})
+// function getRandomValue(){
+//   return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+// }
+
 
 server.listen(4000, () => {
   console.log(`Ctrl+Click to open: http://localhost:4000`);
