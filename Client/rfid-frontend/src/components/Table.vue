@@ -1,26 +1,10 @@
 <template>
-  <div id="app" class="col-sm-12">
-    <div class="offset">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Card Number</th>
-            <th>Initial Balance</th>
-            <th>Transport Fare</th>
-            <th>New Balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="transaction in transactions" :key="transaction._id">
-            <td>{{ transaction.cardNumber }}</td>
-            <td>{{ transaction.initialBalance }}</td>
-            <td>{{ transaction.transportFare }}</td>
+  <div class="container">
+        <!-- <div v-for="(table,index) in tableData" :key="table.newBalance"> -->
+    <v-client-table :data="tableData" :columns="columns" :options="options">
+    </v-client-table>
+    <!-- </div> -->
 
-            <td>{{ transaction.newBalance }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </template>
 <script>
@@ -29,6 +13,21 @@ export default {
   name: "Table",
   data() {
     return {
+      columns: ["cardUUID", "initialBalance", "transportFare","newBalance","createdAt","updatedAt"],
+      tableData: [],
+      options: {
+        headings: {
+          cardUUID: "Card Number",
+          initialBalance: "Initial Balance",
+          transportFare: "Transport Fare",
+          newBalance:"New Balance",
+          createdAt: "Created At",
+          updatedAt: "Updated At"
+
+        },
+        sortable: ["Initial Balance", "id"],
+        filterable: ["fare", "new"]
+      },
       msg: "Welcome to Your Vue.js App",
       transactions: []
     };
@@ -37,30 +36,63 @@ export default {
     async getTransaction() {
       await Api.get("/read/transactions")
         .then(response => {
-          this.transactions = response.data.transactions;
-          console.log(response);
+          this.tableData = response.data.transactions
+          console.log(this.tableData)
+
         })
         .catch(error => {
           console.log(error);
         });
     }
   },
-  created() {
+  mounted() {
     this.getTransaction();
   }
 };
 </script>
 <style scoped>
-button.page-link {
-  display: inline-block;
+#app {
+  width: 95%;
+  margin-top: 50px; 
 }
-button.page-link {
-  font-size: 20px;
-  color: #29b3ed;
-  font-weight: 500;
+
+.VuePagination {
+  text-align: center;
 }
-.offset {
-  width: 500px !important;
-  margin: 20px auto;
+
+.vue-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.vue-pagination-ad {
+  text-align: center;
+}
+
+.glyphicon.glyphicon-eye-open {
+  width: 16px;
+  display: block;
+  margin: 0 auto;
+}
+
+th:nth-child(3) {
+  text-align: center;
+}
+
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
 }
 </style>
