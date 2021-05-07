@@ -1,10 +1,7 @@
 <template>
   <div class="container">
-        <!-- <div v-for="(table,index) in tableData" :key="table.newBalance"> -->
     <v-client-table :data="tableData" :columns="columns" :options="options">
     </v-client-table>
-    <!-- </div> -->
-
   </div>
 </template>
 <script>
@@ -13,20 +10,39 @@ export default {
   name: "Table",
   data() {
     return {
-      columns: ["cardUUID", "initialBalance", "transportFare","newBalance","createdAt","updatedAt"],
+      columns: [
+        "cardUUID",
+        "initialBalance",
+        "transportFare",
+        "newBalance",
+        "createdAt",
+        "updatedAt"
+      ],
       tableData: [],
       options: {
         headings: {
           cardUUID: "Card Number",
           initialBalance: "Initial Balance",
           transportFare: "Transport Fare",
-          newBalance:"New Balance",
+          newBalance: "New Balance",
           createdAt: "Created At",
           updatedAt: "Updated At"
-
         },
-        sortable: ["Initial Balance", "id"],
-        filterable: ["fare", "new"]
+        sortable: [
+          "cardUUID",
+          "createdAt",
+          "updatedAt",
+          "transportFare",
+          "newBalance"
+        ],
+        filterable: [
+          "cardUUID",
+          "initialBalance",
+          "transportFare",
+          "newBalance",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       msg: "Welcome to Your Vue.js App",
       transactions: []
@@ -36,9 +52,8 @@ export default {
     async getTransaction() {
       await Api.get("/read/transactions")
         .then(response => {
-          this.tableData = response.data.transactions
-          console.log(this.tableData)
-
+          this.tableData = response.data.transactions;
+          console.log(this.tableData);
         })
         .catch(error => {
           console.log(error);
@@ -53,7 +68,16 @@ export default {
 <style scoped>
 #app {
   width: 95%;
-  margin-top: 50px; 
+  margin-top: 50px;
+}
+.container {
+  max-width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .VuePagination {
