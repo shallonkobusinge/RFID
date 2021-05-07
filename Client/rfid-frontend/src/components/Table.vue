@@ -111,16 +111,6 @@ export default {
   width: 16rem !important;
   margin: 0 0 0 1rem;
 }
-/* .container {
-  max-width: 1000px;
-  margin-right: auto;
-  margin-left: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-} */
-
 .VuePagination {
   text-align: center;
 }
