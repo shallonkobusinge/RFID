@@ -2,6 +2,7 @@
   <div class="container">
     <v-client-table :data="tableData" :columns="columns" :options="options">
     </v-client-table>
+    <button v-on:click="sendMessage('Hello World')">Send</button>
   </div>
 </template>
 <script>
@@ -39,7 +40,8 @@ export default {
           "transportFare",
           "newBalance",
           "createdAt",
-        ]
+        ],
+        connection:null,
       },
       msg: "Welcome to Your Vue.js App",
       transactions: []
@@ -61,10 +63,23 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    sendMessage: function(message){
+      console.log(this.connection)
+      this.connection.send(message)
     }
   },
-  mounted() {
+  created() {
     this.getTransaction();
+    console.log("Starting connection to the web socket ")
+    this.connection = new WebSocket("wss://echo.websocket.org")
+    this.connection.onopen = function(event){
+      console.log(event);
+      console.log("Successfully connected to the web socket")
+    }
+    this.connection.onmessage = function(event){
+      console.log(event);
+    }
   }
 };
 </script>

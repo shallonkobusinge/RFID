@@ -49,16 +49,21 @@ app.get("/", (req, res) => {
 var io = socketio(server)
 
 /*socket connection*/
-io.on('connection', function (socket) {
-  socket.emit('NEW_SOCKET', { message: 'A new user has joined!' });
-  console.log("new socket connected")
-});
+// io.on('connection', function (socket) {
+//   socket.emit('NEW_SOCKET', { message: 'A new user has joined!' });
+//   console.log("new socket connected")
+// });
 
-app.get("/new-transaction", (req, res) => {
-  const body = req.body;
-  //save the transaction data
-  io.emit("NEW_TRANSACTION", { transaction: body, message: "new transaction", success: true })
-  return res.send()
+// app.post("/new-transaction", (req, res) => {
+//   const body = req.body;
+//   //save the transaction data
+//   io.emit("NEW_TRANSACTION", { transaction: body, message: "new transaction", success: true })
+//   return res.send()
+// })
+io.on("connection", socket =>{
+  setInterval(()=>{
+    socket.emit("NEW_SOCKET", { message:"A new user has joined"})
+  },5000)
 })
 
 server.listen(4000, () => {
