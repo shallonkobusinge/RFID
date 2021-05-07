@@ -65,12 +65,31 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 #app {
   width: 95%;
   margin-top: 50px;
+  font-family: Inter;
 }
-.container {
+#app thead {
+  vertical-align: bottom;
+  background: black !important;
+  color: white;
+  font-size: 15px;
+}
+#app label {
+  font-size: 20px;
+}
+#app tr{
+  font-size: 16px;
+}
+#app table {
+  caption-side: bottom;
+  border-collapse: collapse;
+  width: 100% !important;
+  font-size: 13px;
+}
+/* .container {
   max-width: 1000px;
   margin-right: auto;
   margin-left: auto;
@@ -78,7 +97,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-}
+} */
 
 .VuePagination {
   text-align: center;
@@ -102,7 +121,12 @@ export default {
 th:nth-child(3) {
   text-align: center;
 }
-
+.table thead {
+  vertical-align: bottom;
+  background: black !important;
+  color: white;
+  font-size: 13px;
+}
 .VueTables__child-row-toggler {
   width: 16px;
   height: 16px;
