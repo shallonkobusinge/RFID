@@ -31,5 +31,5 @@ exports.validate_transaction = (transaction) => {
         transportFare: Joi.string(),
         newBalance: Joi.string(),
     })
-    return schema.validate(transaction)
+    return schema.validate(transaction) 
 }
