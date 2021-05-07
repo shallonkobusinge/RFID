@@ -19,7 +19,9 @@ const TransactionSchema = mongoose.Schema({
         type: String,
     }
 }, {
-    timestamps: true,
+    timestamps: {
+        createdAt: "created_at",
+    }
 })
 
 exports.TransactionModel = mongoose.model('Transaction', TransactionSchema)

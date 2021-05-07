@@ -16,7 +16,6 @@ export default {
         "transportFare",
         "newBalance",
         "createdAt",
-        "updatedAt"
       ],
       tableData: [],
       options: {
@@ -25,15 +24,14 @@ export default {
           initialBalance: "Initial Balance",
           transportFare: "Transport Fare",
           newBalance: "New Balance",
-          createdAt: "Created At",
-          updatedAt: "Updated At"
+          createdAt: "Transaction Date",
         },
         sortable: [
           "cardUUID",
           "createdAt",
-          "updatedAt",
           "transportFare",
-          "newBalance"
+          "newBalance",
+          "initialBalance"
         ],
         filterable: [
           "cardUUID",
@@ -41,7 +39,6 @@ export default {
           "transportFare",
           "newBalance",
           "createdAt",
-          "updatedAt"
         ]
       },
       msg: "Welcome to Your Vue.js App",
@@ -53,7 +50,13 @@ export default {
       await Api.get("/read/transactions")
         .then(response => {
           this.tableData = response.data.transactions;
-          console.log(this.tableData);
+          for(let i = 0; i < this.tableData.length; i++) {
+            if(this.tableData[i].createdAt === undefined) {
+              this.tableData[i].createdAt = new Date()
+            }
+            this.tableData[i].createdAt = new Date(this.tableData[i].createdAt).toUTCString();
+            console.log(this.tableData[i].createdAt)
+          }
         })
         .catch(error => {
           console.log(error);
