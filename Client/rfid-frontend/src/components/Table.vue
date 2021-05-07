@@ -2,11 +2,9 @@
   <div class="container">
     <v-client-table :data="tableData" :columns="columns" :options="options">
     </v-client-table>
-    <!-- <button v-on:click="sendMessage('Hello World')">Send</button> -->
   </div>
 </template>
 <script>
-import Api from "../services/Apis";
 import io from "socket.io-client";
 var socket = io("http://localhost:4000", { transports: ["websocket"] });
 
@@ -51,7 +49,7 @@ export default {
     };
         
   },
-  methods: {
+
 
     // async getTransaction() {
     //   await Api.get("/read/transactions")
@@ -72,20 +70,7 @@ export default {
     //     });
     // },
 
-    getTransactions() {
-      socket.on("NEW_TRANSACTION", function(data) {
-        this.tableData = data.transactions;
-        for (let i = 0; i < this.tableData.length; i++) {
-          if (this.tableData[i].createdAt === undefined) {
-            this.tableData[i].createdAt = new Date();
-          }
-          this.tableData[i].createdAt = new Date(
-            this.tableData[i].createdAt
-          ).toUTCString();
-        }
-      });
-    }
-  },
+   
   created() {
     let self = this
     // console.log(this.tableData)
@@ -93,13 +78,12 @@ export default {
      socket.on("NEW_TRANSACTION", function(data) {
         self.tableData = data.transactions;
                 for (let i = 0; i < self.tableData.length; i++) {
-          if (self.tableData[i].createdAt === undefined) {
-            self.tableData[i].createdAt = new Date();
-          }
+     
           self.tableData[i].createdAt = new Date(
             self.tableData[i].createdAt
           ).toUTCString();
         }
+    
         // console.log(this.tableData)
      })
     //  console.log(this.tableData)
