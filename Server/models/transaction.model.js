@@ -6,6 +6,7 @@ const TransactionSchema = mongoose.Schema({
 
     cardUUID: {
         type: String,
+        required: true
     },
     initialBalance: {
         type: String,

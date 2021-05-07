@@ -41,3 +41,11 @@ exports.getTransactions = async (req, res) => {
         return res.send({ message: 'No transactions found' })
     }
 }
+
+exports.deleteTransaction = async(req, res)=>{
+    let transaction = await TransactionModel.findOne({_id:req.params.id})
+    if(!transaction){
+        return res.send({message: "No transaction found"});
+    }
+    return res.send({success:true}).status(200)
+}

@@ -1,54 +1,43 @@
 <template>
-  <div class="container">
-    <h2>Document</h2>
-    <ul class="responsive-table">
-      <li class="table-header">
-        <div class="col col-1">UUID</div>
-        <div class="col col-2">Initial Balance</div>
-        <div class="col col-3">Transport Fare</div>
-        <div class="col col-4">New Balance</div>
-      </li>
-      <li class="table-row">
-        <div class="col col-1" data-label="Job Id">42235</div>
-        <div class="col col-2" data-label="Customer Name">John Doe</div>
-        <div class="col col-3" data-label="Amount">$350</div>
-        <div class="col col-4" data-label="Payment Status">Pending</div>
-      </li>
-      <li class="table-row">
-        <div class="col col-1" data-label="Job Id">42442</div>
-        <div class="col col-2" data-label="Customer Name">Jennifer Smith</div>
-        <div class="col col-3" data-label="Amount">$220</div>
-        <div class="col col-4" data-label="Payment Status">Pending</div>
-      </li>
-      <li class="table-row">
-        <div class="col col-1" data-label="Job Id">42257</div>
-        <div class="col col-2" data-label="Customer Name">John Smith</div>
-        <div class="col col-3" data-label="Amount">$341</div>
-        <div class="col col-4" data-label="Payment Status">Pending</div>
-      </li>
-      <li class="table-row">
-        <div class="col col-1" data-label="Job Id">42311</div>
-        <div class="col col-2" data-label="Customer Name">John Carpenter</div>
-        <div class="col col-3" data-label="Amount">$115</div>
-        <div class="col col-4" data-label="Payment Status">Pending</div>
-      </li>
-    </ul>
+  <div id="app" class="col-sm-12">
+    <div class="offset">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Card Number</th>
+            <th>Initial Balance</th>
+            <th>Transport Fare</th>
+            <th>New Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="transaction in transactions" :key="transaction._id">
+            <td>{{ transaction.cardNumber }}</td>
+            <td>{{ transaction.initialBalance }}</td>
+            <td>{{ transaction.transportFare }}</td>
+
+            <td>{{ transaction.newBalance }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <script>
-
 import Api from "../services/Apis";
 export default {
   name: "Table",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App"
+      msg: "Welcome to Your Vue.js App",
+      transactions: []
     };
   },
   methods: {
     async getTransaction() {
-      await Api.get("read/transactions")
+      await Api.get("/read/transactions")
         .then(response => {
+          this.transactions = response.data.transactions;
           console.log(response);
         })
         .catch(error => {
@@ -57,79 +46,21 @@ export default {
     }
   },
   created() {
-  //  this.getTransaction()
-  console.log("From created")
+    this.getTransaction();
   }
 };
 </script>
 <style scoped>
-body {
-  font-family: "lato", sans-serif;
+button.page-link {
+  display: inline-block;
 }
-.container {
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+button.page-link {
+  font-size: 20px;
+  color: #29b3ed;
+  font-weight: 500;
 }
-h2 {
-  font-size: 26px;
-  margin: 20px 0;
-  text-align: center;
-}
-small {
-  font-size: 0.5em;
-}
-.responsive-table li {
-  border-radius: 3px;
-  padding: 25px 30px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
-.responsive-table .table-header {
-  background-color: #95a5a6;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.responsive-table .table-row {
-  background-color: #ffffff;
-  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
-}
-.responsive-table .col-1 {
-  flex-basis: 10%;
-}
-.responsive-table .col-2 {
-  flex-basis: 40%;
-}
-.responsive-table .col-3 {
-  flex-basis: 25%;
-}
-.responsive-table .col-4 {
-  flex-basis: 25%;
-}
-@media all and (max-width: 767px) {
-  .responsive-table .table-header {
-    display: none;
-  }
-  .responsive-table li {
-    display: block;
-  }
-  .responsive-table .col {
-    flex-basis: 100%;
-  }
-  .responsive-table .col {
-    display: flex;
-    padding: 10px 0;
-  }
-  .responsive-table .col::before {
-    color: #6c7a89;
-    padding-right: 10px;
-    content: attr(data-label);
-    flex-basis: 50%;
-    text-align: right;
-  }
+.offset {
+  width: 500px !important;
+  margin: 20px auto;
 }
 </style>
